@@ -6,7 +6,6 @@ import {
   Policy,
   PolicyRequirement,
   Control,
-  PolicyMetadata,
   ComplianceFramework,
   PolicyStatus,
   SeverityLevel
@@ -61,13 +60,11 @@ export class PolicyParser {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       
-      // Parse frontmatter-like headers
       if (line.startsWith('# ')) {
         name = line.substring(2).trim();
       } else if (line.startsWith('## ')) {
         currentSection = line.substring(3).trim().toLowerCase();
         
-        // Process completed requirement/control
         if (currentRequirement && currentRequirement.id) {
           requirements.push(currentRequirement as PolicyRequirement);
           currentRequirement = null;
@@ -76,18 +73,7 @@ export class PolicyParser {
           controls.push(currentControl as Control);
           currentControl = null;
         }
-      } else if (line.startsWith('### ')) {
-        const subSection = line.substring(4).trim().toLowerCase();
-        
-        // Framework detection
-        if (subSection.includes('framework') || subSection.includes('standard')) {
-          const frameworkMatch = content.match(/(SOC2|ISO\s?27001|HIPAA|GDPR|PCI-DSS)/i);
-          if (frameworkMatch) {
-            framework = this.normalizeFramework(frameworkMatch[1]);
-          }
-        }
       } else if (line.startsWith('**') && line.includes(':')) {
-        // Parse key-value metadata
         const match = line.match(/\*\*(\w+):\*\*\s*(.+)/);
         if (match) {
           const key = match[1].toLowerCase();
@@ -113,9 +99,7 @@ export class PolicyParser {
         }
       }
 
-      // Parse requirements section
-      if (currentSection === 'requirements' || currentSection ===('controls and requirements')) {
-        // Check for numbered requirement
+      if (currentSection === 'requirements' || currentSection === 'controls and requirements') {
         const reqMatch = line.match(/^(\d+\.)\s*(.+)/);
         if (reqMatch) {
           if (currentRequirement && currentRequirement.id) {
@@ -130,7 +114,6 @@ export class PolicyParser {
             severity: 'medium'
           };
         } else if (line.startsWith('-') && currentRequirement) {
-          // Additional details for requirement
           const detail = line.substring(1).trim();
           if (detail.startsWith('Category:')) {
             currentRequirement.category = detail.substring(9).trim();
@@ -140,7 +123,6 @@ export class PolicyParser {
         }
       }
 
-      // Parse controls section
       if (currentSection === 'controls' || currentSection === 'control objectives') {
         const controlMatch = line.match(/^([A-Z]+\d+)\s*[-:]\s*(.+)/);
         if (controlMatch) {
@@ -164,13 +146,11 @@ export class PolicyParser {
         }
       }
 
-      // Description extraction from first paragraph
       if (!description && i > 0 && line && !line.startsWith('#') && !line.startsWith('##')) {
         description = line;
       }
     }
 
-    // Push any remaining items
     if (currentRequirement && currentRequirement.id) {
       requirements.push(currentRequirement as PolicyRequirement);
     }
@@ -178,7 +158,6 @@ export class PolicyParser {
       controls.push(currentControl as Control);
     }
 
-    // If no requirements were parsed, create a default one
     if (requirements.length === 0) {
       requirements.push({
         id: uuidv4(),
@@ -267,7 +246,7 @@ export class PolicyParser {
 
 ## Overview
 
-This policy establishes the security requirements for maintaining SOC 2 compliance. All employees and contractors must adhere to these security controls.
+This policy establishes the security requirements for maintaining SOC 2 compliance.
 
 ## Requirements
 
@@ -275,8 +254,6 @@ This policy establishes the security requirements for maintaining SOC 2 complian
 2. Multi-factor authentication must be enabled for all administrative access
 3. Security logs must be retained for at least 90 days
 4. Vulnerability scans must be performed quarterly
-5. All access must be on a need-to-know basis
-6. Data encryption at rest is required for sensitive data
 
 ## Controls
 
@@ -285,12 +262,6 @@ CC6.1 - Logical and Physical Access Controls
 
 CC7.1 - System Operations
 - Implementation: Monitoring and alerting configured
-
-CC7.2 - Change Management
-- Implementation: All changes require approval
-
-CC8.1 - Risk Assessment
-- Implementation: Annual risk assessment performed
 `;
 
     return this.parseMarkdown(policyContent, 'sample-soc2-policy.md');
@@ -309,7 +280,7 @@ CC8.1 - Risk Assessment
 
 ## Purpose
 
-This policy defines the organization's approach to information security management in accordance with ISO 27001 standards.
+This policy defines the organization's approach to information security management.
 
 ## Requirements
 
@@ -317,8 +288,6 @@ This policy defines the organization's approach to information security manageme
 2. Risk assessments must be conducted annually
 3. Asset inventory must be maintained
 4. Access control policy must be documented
-5. Cryptographic controls must be used for sensitive data
-6. Incident management procedures must be in place
 
 ## Controls
 
@@ -327,12 +296,6 @@ A.5 - Information Security Policies
 
 A.6 - Organization of Information Security
 - Implementation: Defined roles and responsibilities
-
-A.7 - Human Resource Security
-- Implementation: Background checks and security training
-
-A.8 - Asset Management
-- Implementation: Asset classification and labeling
 `;
 
     return this.parseMarkdown(policyContent, 'sample-iso27001-policy.md');
