@@ -1,135 +1,84 @@
-# AI Compliance Automation System 🤖
+# compliance-policy-parser
 
-Agent-native SOC2 compliance automation that parses company policies, monitors infrastructure, detects violations, and auto-generates compliance reports.
+## Detailed Description
 
-## Features
+compliance-policy-parser is maintained as an industry-grade software project with production-ready engineering practices.  
+This repository includes documented setup, quality gates, operational guidance, and governance standards so contributors can safely build, test, and ship changes with confidence.
 
-### 🔍 Policy Parser (Doctra-inspired)
-- Parse company policies from Markdown, JSON, and YAML formats
-- Extract compliance requirements, controls, and obligations
-- Auto-detect compliance frameworks (SOC2, ISO 27001, HIPAA, GDPR)
-- Store parsed policies in agent memory for semantic retrieval
+## Problem Statement
 
-### 🌐 Infrastructure Monitor
-- **DNS Monitoring**: Track domain registrations, DNS records, TTL changes
-- **IP Monitoring**: Track IP ranges, reputation, proxy/VPN detection
-- **Certificate Monitoring**: SSL/TLS certificate expiration tracking
-- **Security Record Checking**: SPF, DKIM, DMARC validation
+Describe the user or business problem this project solves, the target users, and expected outcomes.
 
-### ⚠️ Violation Detection Engine
-- Real-time policy vs. infrastructure comparison
-- Rule-based detection with severity scoring
-- Automatic evidence collection
-- Remediation tracking
+## Solution Overview
 
-### 🧠 Agent Memory
-- Vector-based semantic storage for policies
-- Conversation history and context retention
-- Similarity search for compliance queries
-- Knowledge base for compliance patterns
+Summarize the architecture, core modules, and runtime behavior at a high level.
 
-### 🚀 SOAR Automation
-- Automated response workflows for violations
-- Incident creation and triage
-- Playbook execution (Slack, Email, JIRA, PagerDuty)
-- Escalation and assignment automation
+## Key Features
 
-### 📊 Compliance Reports
-- Automated SOC2, ISO 27001, HIPAA report generation
-- Evidence collection and mapping
-- Export to Markdown, HTML, or JSON
-- Executive summaries with risk scoring
+- Clear project scope and intended use.
+- Reproducible local development workflow.
+- Test coverage and CI quality gates.
+- Security and contribution policies.
+- Deployment-ready repository structure.
 
-## Installation
+## Repository Structure
+
+```text
+.
+|-- src/                  # Core implementation
+|-- tests/                # Automated test suites
+|-- docs/                 # Design notes and operational docs
+|-- .github/workflows/    # CI pipelines
+|-- README.md
+|-- LICENSE
+|-- CONTRIBUTING.md
+|-- SECURITY.md
+|-- CODE_OF_CONDUCT.md
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Git
+- Project runtime/toolchain for this repo
+
+### Local Setup
 
 ```bash
-cd ai-compliance-system
-npm install
+npm ci
+npm run lint
+npm test
+npm run build
 ```
 
 ## Usage
 
-### Interactive Mode
+Document primary commands, API routes, CLI examples, or UI workflows here.
 
-```bash
-npm run dev -- interactive
-# or
-npm run dev -- i
-```
+## Quality Standards
 
-### Command Line
+- CI must pass before merge.
+- Changes require tests for critical behavior.
+- Security-sensitive changes should include risk notes.
+- Keep pull requests focused and reviewable.
 
-```bash
-# Run a compliance scan
-npm run dev -- scan -d example.com -c example.com
+## Security
 
-# Generate a SOC2 report
-npm run dev -- report -f SOC2 -t detailed -o report.md
+See `SECURITY.md` for responsible disclosure and handling guidelines.
 
-# List violations
-npm run dev -- violations
+## Contributing
 
-# List policies
-npm run dev -- policies
+See `CONTRIBUTING.md` for branching, commit, and pull request expectations.
 
-# List incidents
-npm run dev -- incidents
-```
+## Roadmap
 
-## Architecture
+Track upcoming milestones, technical debt, and planned feature work.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    ComplianceAgent Core                         │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │ Policy Parser│  │Infra Monitor │  │Agent Memory  │          │
-│  │   (Doctra)   │  │(DNS/IP/Cert) │  │   (Vector)   │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
-├─────────────────────────────────────────────────────────────────┤
-│                     Violation Detection                         │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │SOAR Automation│ │Alert Manager │  │Report Gen    │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
-└─────────────────────────────────────────────────────────────────┘
-```
+## Support
 
-## Example Policies
-
-The system includes sample SOC2 and ISO 27001 policies for demonstration:
-
-### SOC2 Policy Requirements:
-1. All external-facing systems must use TLS 1.2 or higher
-2. Multi-factor authentication must be enabled for all administrative access
-3. Security logs must be retained for at least 90 days
-4. Vulnerability scans must be performed quarterly
-5. All access must be on a need-to-know basis
-6. Data encryption at rest is required for sensitive data
-
-### Detection Rules:
-- Certificate expiring within 7/30/60 days
-- Missing SPF/DMARC records
-- Malicious/suspicious IP addresses
-- Tor exit nodes
-
-## Configuration
-
-Edit the agent initialization in `src/cli.ts` to customize:
-
-```typescript
-const agent = new ComplianceAgent('your-org-id', 'Your Organization');
-```
-
-## Enterprise Integration
-
-The system supports integration with:
-- **Slack**: Real-time alerts
-- **JIRA**: Incident ticketing
-- **PagerDuty**: On-call escalation
-- **Email**: Notifications
-- **Webhooks**: Custom integrations
+Open a GitHub issue for bugs, feature requests, or documentation gaps.
 
 ## License
 
-MIT
+This project is released under the MIT License.
